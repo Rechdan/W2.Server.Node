@@ -5,4 +5,4 @@ WYD Private server made with nodejs
 https://www.twitch.tv/rechdan
 
 # 📼 Recorded LIVES
-https://youtu.be/B0NGsKxgOkg
+https://youtu.be/gQjFqbHfRoE
