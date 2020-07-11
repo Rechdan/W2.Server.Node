@@ -4,5 +4,7 @@
 		"target": "ES5",
 		"module": "CommonJS",
 		"jsx": "react",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true
 	}
 }

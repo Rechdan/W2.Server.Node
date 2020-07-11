@@ -1,5 +1,10 @@
 // npm
 import net from 'net';
+
+// database
+import { db } from 'server/database';
+
+// classes
 import { GameClient } from 'server/classes/game-client';
 
 // game object
@@ -14,15 +19,20 @@ export const game = new (class {
 	}
 
 	// initializer
-	public init = () => {
+	public init = async () => {
+		// connect to database
+		await db.conn.connect();
+
 		// init game server
 		net.createServer()
 			// on client connection
 			.on('connection', (socket) => {
 				// init client
 				const client = new GameClient(socket);
+
 				// add client to array
 				this.clients.push(client);
+
 				// event on socket closed
 				socket.on('close', () => {
 					// find client index on array

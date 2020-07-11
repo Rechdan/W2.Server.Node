@@ -10,13 +10,16 @@ import { game } from 'server/classes/game';
 if (cluster.isMaster) {
 	// clear old logs
 	console.clear();
+
 	// log
 	console.log('-> master');
+
 	// init master
 	master.init();
 } else if (cluster.isWorker) {
 	// log
 	console.log('-> worker:', process.env.type);
+
 	// filter process type
 	switch (process.env.type) {
 		case 'WEB':
