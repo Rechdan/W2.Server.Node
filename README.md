@@ -1,8 +1,17 @@
-# W2.Server.Node
-WYD Private server made with nodejs
+# 🎮 W2.Server.Node
 
-# 🎥 For the LIVE streams
-https://www.twitch.tv/rechdan
+This is a game and web server for private servers of the game WYD (With Your Destiny). This project is mainly for studies, but the user can use it the way they want to.
 
-# 📼 Recorded LIVES
-https://youtu.be/gQjFqbHfRoE
+---
+
+### 🎥 Twitch channel
+
+[@Rechdan](https://www.twitch.tv/rechdan)
+
+---
+
+### 📼 lives uploaded to YouTube
+
+[LIVE #2 - 10/07/2020 - Continuação do emulador para WYD em NodeJS](https://youtu.be/hksxszUX1ps)
+
+[LIVE #1 - 09/07/2020 - Começo do emulador para WYD em NodeJS](https://youtu.be/gQjFqbHfRoE)
