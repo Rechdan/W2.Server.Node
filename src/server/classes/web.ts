@@ -3,8 +3,8 @@ import express from 'express';
 import helmet from 'helmet';
 import http from 'http';
 
-// web object
-export const web = new (class {
+// web class
+export class Web {
 	// initializer
 	public init = () => {
 		// initialize express
@@ -26,4 +26,4 @@ export const web = new (class {
 			// listen to port 3000
 			.listen(3000, '192.168.0.100');
 	};
-})();
+}

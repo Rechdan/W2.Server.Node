@@ -1,11 +1,12 @@
 // npm
-import cluster from 'cluster';
+import cp from 'child_process';
+import path from 'path';
 
 // database
 import { db } from 'server/database';
 
-// master object
-export const master = new (class {
+// master class
+export class Master {
 	// initializer
 	public init = async () => {
 		// connect to database
@@ -14,10 +15,10 @@ export const master = new (class {
 		// database migration
 		await db.conn.synchronize();
 
-		// web server
-		cluster.fork({ type: 'WEB' });
+		// initialize web process
+		cp.fork(path.resolve(__dirname, 'web.js'), [], { stdio: 'inherit' });
 
-		// game server
-		cluster.fork({ type: 'GAME' });
+		// initialize game process
+		cp.fork(path.resolve(__dirname, 'game.js'), [], { stdio: 'inherit' });
 	};
-})();
+}
