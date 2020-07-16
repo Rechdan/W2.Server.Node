@@ -1,5 +1,5 @@
 // classes
-import { GameClient } from 'server/classes/game-client';
+import { GameWorker } from 'server/classes/game-worker';
 
 // packets
 import { P20D } from 'server/packets/p20D';
@@ -7,7 +7,7 @@ import { P20D } from 'server/packets/p20D';
 // packet object
 export const packet = new (class {
 	// controller
-	public controller = (buffer: Buffer, client: GameClient) => {
+	public controller = (buffer: Buffer, worker: GameWorker, client: any) => {
 		// get packet ID
 		const pakcetID = buffer.readUInt16LE(4);
 
@@ -17,11 +17,10 @@ export const packet = new (class {
 				// filter packet
 				switch (pakcetID) {
 					case 0x20d:
-						new P20D(buffer).controller(client);
+						new P20D(buffer).controller(worker, client);
 						break;
 
 					default:
-						client.close();
 						break;
 				}
 				break;

@@ -1,5 +1,5 @@
 // classes
-import { GameClient } from 'server/classes/game-client';
+import { GameWorker } from 'server/classes/game-worker';
 
 // structs
 import { SHeader } from 'server/structs/sHeader';
@@ -27,11 +27,11 @@ export class P101 {
 	};
 
 	// helper
-	public static send = (client: GameClient, message: string) => {
+	public static send = (worker: GameWorker, client: any, message: string) => {
 		// create buffer
 		const buffer = new P101(message).getBuffer();
 
 		// send buffer to client
-		client.send(buffer);
+		worker.sendPacket(client.id, buffer);
 	};
 }

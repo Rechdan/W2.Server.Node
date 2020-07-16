@@ -17,8 +17,6 @@ const connectionOptions: ConnectionOptions = {
 	database: 'w2-node',
 
 	entities: [UserEntity],
-
-	logging: true,
 };
 
 // database object

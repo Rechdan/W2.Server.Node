@@ -2,7 +2,9 @@
 import { db } from 'server/database';
 
 // classes
-import { GameClient } from 'server/classes/game-client';
+import { GameWorker } from 'server/classes/game-worker';
+
+// packets
 import { P101 } from 'server/packets/p101';
 
 // packet
@@ -19,7 +21,7 @@ export class P20D {
 	}
 
 	// controller
-	public controller = async (client: GameClient) => {
+	public controller = async (worker: GameWorker, client: any) => {
 		// extract from this
 		const { username, password } = this;
 
@@ -35,13 +37,19 @@ export class P20D {
 		// validates user password
 		if (password !== user.password) {
 			// invalid password
-			P101.send(client, 'Senha inválida!');
+			P101.send(worker, client, 'Senha inválida!');
 		} else {
-			// sets user
-			client.user = user;
+			if (process.send) {
+				// sets user
+				process.send({
+					type: 'set-client-user',
+					client: client.id,
+					user,
+				});
+			}
 
 			// test
-			P101.send(client, `Seu ID é: ${client.user.id}`);
+			P101.send(worker, client, `Seu ID é: ${user.id}`);
 		}
 	};
 }
