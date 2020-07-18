@@ -5,12 +5,13 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "sucrase-node ./scripts/dev.js",
-		"dev-server": "parcel watch ./src/server/server.ts ./src/server/web.ts ./src/server/game.ts ./src/server/game-worker.ts --out-dir ./dist --target node --bundle-node-modules --log-level 4 --no-autoinstall --no-cache"
+		"dev-server": "rimraf ./dist && parcel watch ./src/server/index.ts --out-dir ./dist --out-file server.js --target node --bundle-node-modules --log-level 4 --no-autoinstall --no-cache"
 	},
 	"dependencies": {
 		"express": "4.17.1",
 		"helmet": "3.23.3",
 		"mysql": "2.18.1",
+		"rimraf": "3.0.2",
 		"typeorm": "0.2.25"
 	},
 	"devDependencies": {

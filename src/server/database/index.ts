@@ -19,11 +19,14 @@ const connectionOptions: ConnectionOptions = {
 	entities: [UserEntity],
 };
 
+// db connection
+const conn = getConnectionManager().create(connectionOptions);
+
 // database object
 export const db = {
 	// connection
-	conn: getConnectionManager().create(connectionOptions),
+	conn,
 
 	// entities
-	user: UserEntity,
+	user: () => conn.getRepository(UserEntity),
 };

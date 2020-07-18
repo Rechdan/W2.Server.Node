@@ -23,12 +23,12 @@ export class SHeader {
 	public getBuffer = () => {
 		const buffer = Buffer.alloc(12);
 
-		buffer.writeUInt16LE(this.size, 0);
+		buffer.writeInt16LE(this.size, 0);
 		buffer[2] = this.key;
 		buffer[3] = this.checkSum;
-		buffer.writeUInt16LE(this.packetID, 4);
-		buffer.writeUInt16LE(this.clientID, 6);
-		buffer.writeUInt32LE(this.timeStamp, 8);
+		buffer.writeInt16LE(this.packetID, 4);
+		buffer.writeInt16LE(this.clientID, 6);
+		buffer.writeInt32LE(this.timeStamp, 8);
 
 		return buffer;
 	};

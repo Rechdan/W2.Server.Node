@@ -1,24 +1,22 @@
-// npm
-import cp from 'child_process';
-import path from 'path';
-
 // database
 import { db } from 'server/database';
 
-// master class
-export class Master {
-	// initializer
-	public init = async () => {
-		// connect to database
-		await db.conn.connect();
+// classes
+import { Web } from 'server/classes/web';
+import { Game } from 'server/classes/game';
 
-		// database migration
+export class Master {
+	public web!: Web;
+	public game!: Game;
+
+	public init = async () => {
+		await db.conn.connect();
 		await db.conn.synchronize();
 
-		// initialize web process
-		cp.fork(path.resolve(__dirname, 'web.js'), [], { stdio: 'inherit' });
+		this.web = new Web();
+		this.web.init();
 
-		// initialize game process
-		cp.fork(path.resolve(__dirname, 'game.js'), [], { stdio: 'inherit' });
+		this.game = new Game();
+		this.game.init();
 	};
 }

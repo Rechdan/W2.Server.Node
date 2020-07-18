@@ -3,40 +3,50 @@ import net from 'net';
 import crypto from 'crypto';
 
 // database
-import { DB } from 'server/database/types';
+import { UserEntity } from 'server/database/user';
 
 // classes
 import { packetSecurity } from 'server/classes/packet-security';
+import { packet } from 'server/classes/packet';
 
-// game client class
 export class GameClient {
-	// attributes
 	private socket: net.Socket;
 	public id: string;
 	public state: 'connection' | 'login' | 'password' | 'characters' | 'game' = 'connection';
 
-	public user: DB.User | null = null;
+	public user!: UserEntity;
 
-	// constructor
 	public constructor(socket: net.Socket) {
-		// client attributes
 		this.socket = socket;
 		this.id = crypto.randomBytes(10).toString('hex');
 
-		// log
-		console.log('id:', this.id);
+		this.socket.on('data', this.onDataReceived);
 	}
 
-	// send packet
+	private onDataReceived = (buffer: Buffer) => {
+		if (this.state === 'connection') {
+			if (buffer.length === 4 || buffer.length === 120) {
+				this.state = 'login';
+
+				if (buffer.length === 120) {
+					this.onDataReceived(buffer.slice(4));
+				}
+			} else {
+				this.close();
+			}
+		} else {
+			packetSecurity.decrypt(buffer);
+
+			packet.controller(this, buffer);
+		}
+	};
+
 	public send = (buffer: Buffer) => {
-		// encrypt buffer
 		packetSecurity.encrypt(buffer);
 
-		// send buffer to connection
 		this.socket.write(buffer);
 	};
 
-	// closes client connection
 	public close = () => {
 		this.socket.destroy();
 	};

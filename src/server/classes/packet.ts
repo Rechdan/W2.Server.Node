@@ -1,28 +1,54 @@
 // classes
-import { GameWorker } from 'server/classes/game-worker';
+import { GameClient } from 'server/classes/game-client';
 
 // packets
-import { P20D } from 'server/packets/p20D';
+import { P_20D } from 'server/packets/p20D';
+import { P_FDE } from 'server/packets/pFDE';
 
-// packet object
 export const packet = new (class {
-	// controller
-	public controller = (buffer: Buffer, worker: GameWorker, client: any) => {
-		// get packet ID
+	public controller = (client: GameClient, buffer: Buffer) => {
 		const pakcetID = buffer.readUInt16LE(4);
 
-		// filter client state
 		switch (client.state) {
 			case 'login':
-				// filter packet
 				switch (pakcetID) {
 					case 0x20d:
-						new P20D(buffer).controller(worker, client);
+						new P_20D(buffer).controller(client);
 						break;
 
 					default:
+						client.close();
 						break;
 				}
+				break;
+
+			case 'password':
+				switch (pakcetID) {
+					case 0xfde:
+						new P_FDE(buffer).validateNumeric(client);
+						break;
+
+					default:
+						// client.close();
+						console.log('unk:', pakcetID.toString(16));
+						break;
+				}
+				break;
+
+			case 'characters':
+				switch (pakcetID) {
+					case 0xfde:
+						new P_FDE(buffer).changeNumeric(client);
+						break;
+
+					default:
+						// client.close();
+						console.log('unk:', pakcetID.toString(16));
+						break;
+				}
+				break;
+
+			case 'game':
 				break;
 		}
 	};

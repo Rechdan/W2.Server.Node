@@ -1,21 +1,16 @@
 // classes
-import { GameWorker } from 'server/classes/game-worker';
+import { GameClient } from 'server/classes/game-client';
 
 // structs
 import { SHeader } from 'server/structs/sHeader';
 
-// packet
-export class P101 {
-	// attributes
+export class P_101 {
 	public message: string;
 
-	// constructor
 	public constructor(message: string) {
-		// init attributes
 		this.message = message;
 	}
 
-	// convert class to buffer
 	public getBuffer = () => {
 		const buffer = Buffer.alloc(108);
 
@@ -26,12 +21,9 @@ export class P101 {
 		return buffer;
 	};
 
-	// helper
-	public static send = (worker: GameWorker, client: any, message: string) => {
-		// create buffer
-		const buffer = new P101(message).getBuffer();
+	public static send = (client: GameClient, message: string) => {
+		const buffer = new P_101(message).getBuffer();
 
-		// send buffer to client
-		worker.sendPacket(client.id, buffer);
+		client.send(buffer);
 	};
 }

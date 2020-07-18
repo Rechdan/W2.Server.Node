@@ -1,20 +1,23 @@
 // npm
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Index, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Index, Column, CreateDateColumn } from 'typeorm';
 
-// database
-import { DB } from 'server/database/types';
+// user category
+enum UserCategory {
+	PLAYER = 'player',
+	ADMIN = 'admin',
+}
 
 // entity
 @Entity({ name: 'user' })
-export class UserEntity extends BaseEntity implements DB.User {
+export class UserEntity {
 	// columns
 
 	@PrimaryGeneratedColumn('increment')
 	id!: number;
 
 	@Index()
-	@Column('enum', { enum: DB.UserCategory, default: DB.UserCategory.PLAYER })
-	category!: DB.UserCategory;
+	@Column('enum', { enum: UserCategory, default: UserCategory.PLAYER })
+	category!: UserCategory;
 
 	@Index({ unique: true })
 	@Column('varchar', { length: 200 })
@@ -26,7 +29,7 @@ export class UserEntity extends BaseEntity implements DB.User {
 
 	@Index()
 	@Column('varchar', { length: 200, nullable: true, default: null })
-	numeric!: string;
+	numeric!: string | null;
 
 	@Index()
 	@CreateDateColumn()
